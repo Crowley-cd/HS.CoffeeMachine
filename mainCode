@@ -1,0 +1,121 @@
+
+fun main() {
+        Coffeemachine().mainMenu()
+}
+
+class Coffeemachine() {
+    companion object {
+        var WATER = 400
+        var MILK = 540
+        var COFFEE_BEANS = 120
+        var CCUPS = 9
+        var MONEY = 550
+        var STATUS = 0
+    }
+
+
+    fun mainMenu() {
+        while (STATUS != -1) {
+            println("Write action (buy, fill, take, remaining, exit): >")
+            val selectMM = readln()
+            when (selectMM) {
+                "1", "buy" -> buy()
+                "2", "fill" -> fill()
+                "3", "take" -> take()
+                "exit" -> exit()
+                "remaining" -> statistic()
+                else -> mainMenu()
+            }
+        }
+    }
+
+    fun buy(){
+        print("""What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino, back - to main menu: >""".trimIndent())
+        val kindCoffee = readln()
+        when (kindCoffee) {
+            "back" -> mainMenu()
+            "1","espresso" -> {
+                when {
+                    WATER < 250 -> println("Sorry, not enough water!")
+                    COFFEE_BEANS < 16 -> println("Sorry, not enough coffee beans!")
+                    CCUPS < 1 -> println("Sorry, not enough cups!")
+                    else -> {
+                        println("I have enough resources, making you a coffee!")
+                        WATER -= 250
+                        COFFEE_BEANS -= 16
+                        MONEY += 4
+                        CCUPS -= 1
+                    }
+                }
+            }
+            "2","latte" -> {
+                when {
+                    WATER < 350 -> println("Sorry, not enough water!")
+                    MILK < 75 -> println("Sorry, not enough milk!")
+                    COFFEE_BEANS < 20 -> println("Sorry, not enough coffee beans!")
+                    CCUPS < 1 -> println("Sorry, not enough cups!")
+                    else -> {
+                        println("I have enough resources, making you a coffee!")
+                        WATER -= 350
+                        MILK -= 75
+                        COFFEE_BEANS -= 20
+                        MONEY += 7
+                        CCUPS -= 1
+                    }
+                }
+            }
+            "3","cappucino" -> {
+                when {
+                    WATER < 250 -> println("Sorry, not enough water!")
+                    MILK < 100 -> println("Sorry, not enough milk!")
+                    COFFEE_BEANS < 12 -> println("Sorry, not enough coffee beans!")
+                    CCUPS < 1 -> println("Sorry, not enough cups!")
+                    else -> {
+                        println("I have enough resources, making you a coffee!")
+                        WATER -= 200
+                        MILK -= 100
+                        COFFEE_BEANS -= 12
+                        MONEY += 6
+                        CCUPS -= 1}
+                }
+            }
+        }
+        mainMenu()
+    }
+
+    fun statistic() {
+        println("""
+  The coffee machine has:
+  $WATER ml of water
+  $MILK ml of milk
+  $COFFEE_BEANS g of coffee beans
+  $CCUPS disposable cups
+  $${MONEY} of money
+ """.trimIndent())
+        mainMenu()
+    }
+
+    fun take(){
+        println("I gave you $$MONEY")
+        MONEY = 0
+        mainMenu()
+    }
+
+    fun fill(){
+        print("Write how many ml of water do you want to add: >")
+        WATER += readln().toInt()
+        print("Write how many ml of milk do you want to add: >")
+        MILK += readln().toInt()
+        print("Write how many grams of coffee beans do you want to add: >")
+        COFFEE_BEANS += readln().toInt()
+        print("Write how many disposable cups of coffee do you want to add: >")
+        CCUPS += readln().toInt()
+        mainMenu()
+    }
+
+    fun exit() {
+        Coffeemachine.STATUS = -1
+    mainMenu()
+    }
+
+}
